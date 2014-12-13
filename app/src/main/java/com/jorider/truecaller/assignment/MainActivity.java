@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
         private TextView secondText = null;
         private TextView thirdText = null;
 
+        private ProgressBar firstProgressBar, secondProgressBar, thirdProgressBar = null;
+
         public PlaceholderFragment() {
         }
 
@@ -77,6 +80,10 @@ public class MainActivity extends ActionBarActivity {
             secondText = (TextView) rootView.findViewById(R.id.second_request);
             thirdText = (TextView) rootView.findViewById(R.id.third_request);
 
+            firstProgressBar = (ProgressBar) rootView.findViewById(R.id.first_progressBar);
+            secondProgressBar = (ProgressBar) rootView.findViewById(R.id.second_progressBar);
+            thirdProgressBar = (ProgressBar) rootView.findViewById(R.id.third_progressBar);
+
             return rootView;
         }
 
@@ -85,14 +92,19 @@ public class MainActivity extends ActionBarActivity {
          * First request
          */
         private void firstRequest() {
+            firstProgressBar.setVisibility(View.VISIBLE);
+            Log.e(TAG, "BEGINS FIRST REQUEST->" + System.currentTimeMillis());
             new FirstRequest(new ListenerFirstRequest() {
                 @Override
                 public void onResultOK(String result) {
+                    firstProgressBar.setVisibility(View.INVISIBLE);
+                    Log.e(TAG, "FINISHES FIRST REQUEST->" + System.currentTimeMillis());
                     manageFirstResponse(result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
+                    firstProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.VOLLEY);
@@ -102,14 +114,19 @@ public class MainActivity extends ActionBarActivity {
          * Second request
          */
         private void secondRequest() {
+            secondProgressBar.setVisibility(View.VISIBLE);
+            Log.e(TAG, "BEGINS SECOND REQUEST->" + System.currentTimeMillis());
             new SecondRequest(new ListenerSecondRequest() {
                 @Override
                 public void onResultOK(String result) {
+                    secondProgressBar.setVisibility(View.INVISIBLE);
+                    Log.e(TAG, "FINISHES SECOND REQUEST->" + System.currentTimeMillis());
                     manageSecondResponse(result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
+                    secondProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.VOLLEY);
@@ -119,14 +136,19 @@ public class MainActivity extends ActionBarActivity {
          * Third request
          */
         private void thirdRequest() {
+            thirdProgressBar.setVisibility(View.VISIBLE);
+            Log.e(TAG, "BEGINS THIRD REQUEST->" + System.currentTimeMillis());
             new ThirdRequest(new ListenerThirdRequest() {
                 @Override
                 public void onResultOK(String result) {
+                    thirdProgressBar.setVisibility(View.INVISIBLE);
+                    Log.e(TAG, "FINISHES THIRD REQUEST->" + System.currentTimeMillis());
                     Log.e(TAG, result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
+                    thirdProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.VOLLEY);
