@@ -1,16 +1,18 @@
 package com.jorider.truecaller.assignment.requests;
 
-import android.util.Log;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.jorider.truecaller.assignment.listeners.ListenerFirstRequest;
 import com.jorider.truecaller.assignment.listeners.ListenerVolley;
+import com.jorider.truecaller.assignment.model.AppRequestError;
+import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Map;
 
 /**
  * Created by jorge on 13/12/14.
@@ -25,18 +27,19 @@ public class FirstRequest extends BaseRequest implements ListenerVolley {
     /**
      * Constructor
      *
-     * @param library
      * @param list
      */
-    public FirstRequest(int library, ListenerFirstRequest list){
-
+    public FirstRequest(ListenerFirstRequest list){
         this.listener = list;
+    }
 
+    @Override
+    public void run(int library) {
         switch (library) {
             case NATIVE:
                 break;
             case VOLLEY:
-                new VolleyRequests().createVolleyRequest(Request.Method.POST, TIMEOUT, this);
+                new VolleyRequests().createVolleyRequest(TIMEOUT, this);
                 break;
             default:
                 break;
@@ -44,52 +47,13 @@ public class FirstRequest extends BaseRequest implements ListenerVolley {
     }
 
     @Override
-    public void run() {
-
-    }
-
-    @Override
-    public void onResponseOK(String response) {
-        listener.onResultOK(response);
+    public void onResponseOK(NetworkResponse networkResponse) {
+        listener.onResultOK(ManageRequestAnswer.manageResultFromServer(networkResponse.data));
     }
 
     @Override
     public void onResponseKO(VolleyError error) {
-        int httpResponse = 404;
-        String message = null;
-
-        if (error instanceof NetworkError) {
-            httpResponse = 403;
-            message = (error == null || error.getCause() == null || error.getCause().toString() == null) ? "NetworkError" : error.getCause().toString();
-        } else if (error instanceof ServerError) {
-            httpResponse = 500;
-            message = (error == null || error.getCause() == null || error.getCause().toString() == null) ? "ServerError" : error.getCause().toString();
-        } else if (error instanceof AuthFailureError) {
-            httpResponse = 511;
-            message = (error == null || error.getCause() == null || error.getCause().toString() == null) ? "AuthFailureError" : error.getCause().toString();
-        } else if (error instanceof ParseError) {
-            message = (error == null || error.getCause() == null || error.getCause().toString() == null) ? "ParseError" : error.getCause().toString();
-        } else if (error instanceof TimeoutError) {
-            httpResponse = 408;
-            message = (error == null || error.getCause() == null || error.getCause().toString() == null) ? "TimeoutError" : error.getCause().toString();
-        } else {
-            try {
-                httpResponse = error.networkResponse.statusCode;
-
-                message = error.getCause().toString();
-                if(message == null) {
-                    message = error.getMessage();
-                    if(message == null) {
-                        error.getStackTrace().toString();
-                    }
-                }
-            } catch (Throwable e) {
-                Log.e(TAG, (e == null || e.getLocalizedMessage() == null) ? "Throwable" : e.getLocalizedMessage());
-                message = "";
-            }
-        }
-
-        listener.onErrorRequest(httpResponse, message);
-
+        AppRequestError appRequestError = ManageRequestAnswer.manageVolleyError(error, TAG);
+        listener.onErrorRequest(appRequestError);
     }
 }

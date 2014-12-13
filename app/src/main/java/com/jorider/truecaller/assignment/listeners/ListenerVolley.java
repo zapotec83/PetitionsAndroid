@@ -1,5 +1,6 @@
 package com.jorider.truecaller.assignment.listeners;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 /**
@@ -7,7 +8,7 @@ import com.android.volley.VolleyError;
  */
 public interface ListenerVolley {
 
-    public void onResponseOK (String response);
+    public void onResponseOK (NetworkResponse response);
 
     public void onResponseKO (VolleyError error);
 }

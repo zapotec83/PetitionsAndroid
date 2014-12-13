@@ -11,7 +11,7 @@ public abstract class BaseRequest {
     /**
      * Method to execute the request
      */
-    public void run() {
+    public void run(int library) {
 
     }
 }

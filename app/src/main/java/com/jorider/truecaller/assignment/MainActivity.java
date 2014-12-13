@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jorider.truecaller.assignment.listeners.ListenerFirstRequest;
+import com.jorider.truecaller.assignment.model.AppRequestError;
 import com.jorider.truecaller.assignment.requests.BaseRequest;
 import com.jorider.truecaller.assignment.requests.FirstRequest;
 
@@ -76,17 +77,17 @@ public class MainActivity extends ActionBarActivity {
          * First request
          */
         private void firstRequest() {
-            new FirstRequest(BaseRequest.VOLLEY, new ListenerFirstRequest() {
+            new FirstRequest(new ListenerFirstRequest() {
                 @Override
                 public void onResultOK(String result) {
                     Log.e(TAG, result);
                 }
 
                 @Override
-                public void onErrorRequest(int httpErrorCode, String msg) {
-                    Log.e(TAG, "" + httpErrorCode + "->" + msg);
+                public void onErrorRequest(AppRequestError error) {
+                    Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
-            }).run();
+            }).run(BaseRequest.VOLLEY);
         }
 
         /**
