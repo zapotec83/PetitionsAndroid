@@ -6,4 +6,5 @@ package com.jorider.truecaller.assignment.constants;
 public class Constants {
 
     public static final String URL = "http://www.truecaller.com";
+    public static final int CHARACTER_POSITION = 10;
 }
