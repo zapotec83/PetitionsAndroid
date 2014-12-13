@@ -142,8 +142,6 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onResultOK(String result) {
                     thirdProgressBar.setVisibility(View.INVISIBLE);
-                    Log.e(TAG, "FINISHES THIRD REQUEST->" + System.currentTimeMillis());
-                    Log.e(TAG, result);
                 }
 
                 @Override

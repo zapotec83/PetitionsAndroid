@@ -7,13 +7,6 @@ import com.jorider.truecaller.assignment.listeners.ListenerVolley;
 import com.jorider.truecaller.assignment.model.AppRequestError;
 import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Map;
-
 /**
  * Created by jorge on 13/12/14.
  */
