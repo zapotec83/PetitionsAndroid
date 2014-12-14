@@ -119,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
             firstProgressBar.setVisibility(View.GONE);
 
             if (result.getError() == null) {
-                firstText.setText("The character at the " + Constants.CHARACTER_POSITION + " position is " + Html.fromHtml("<b>" + result.getResponse() + "</b>"));
+                firstText.setText(Html.fromHtml("The character at the " + Constants.CHARACTER_POSITION + " position is " + "<b>" + result.getResponse() + "</b>"));
             } else {
                 Toast.makeText(context, "ERROR FIRST REQUEST!" + result.getError().getHttpCode() + result.getError().getMsg(), Toast.LENGTH_SHORT).show();
                 firstText.setText("");
@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
             thirdProgressBar.setVisibility(View.GONE);
 
             if (result.getError() == null) {
-                thirdText.setText("The word " + TruecallerWordCounterRequest.WORD_REPEATED + " is repeated ->" + Html.fromHtml("<b>" + result.getKeyWordRepeated() + "</b>") + " times");
+                thirdText.setText(Html.fromHtml("The word " + TruecallerWordCounterRequest.WORD_REPEATED + " is repeated ->" + "<b>" +  result.getKeyWordRepeated() + "</b>" + " times"));
             } else {
                 Toast.makeText(context, "ERROR THIRD REQUEST!" + result.getError().getHttpCode() + result.getError().getMsg(), Toast.LENGTH_SHORT).show();
                 thirdText.setText("");
