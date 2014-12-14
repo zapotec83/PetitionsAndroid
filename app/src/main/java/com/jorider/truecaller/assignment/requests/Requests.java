@@ -1,6 +1,7 @@
 package com.jorider.truecaller.assignment.requests;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -15,8 +16,12 @@ import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
 
 import org.apache.http.HttpResponse;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
- * Created by jorge on 13/12/14.
+ * Created by jorge
  */
 public class Requests extends BaseRequest implements ListenerVolley, ListenerAsyncTask {
 
@@ -44,23 +49,38 @@ public class Requests extends BaseRequest implements ListenerVolley, ListenerAsy
                 new VolleyRequests().createVolleyRequest(TIMEOUT, this);
                 break;
             default:
+                new AsyncTaskRequest(TIMEOUT, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 break;
         }
     }
 
     @Override
     public void onResponseOK(NetworkResponse networkResponse) {
-        listener.onResultOK(ManageRequestAnswer.manageResultFromServer(networkResponse.data));
+        InputStream source = new ByteArrayInputStream(networkResponse.data);
+        listener.onResultOK(ManageRequestAnswer.manageResultFromServer(source));
     }
 
     @Override
     public void onResponseKO(VolleyError error) {
-        AppRequestError appRequestError = ManageRequestAnswer.manageVolleyError(error, TAG);
+        AppRequestError appRequestError = ManageRequestAnswer.manageVolleyError(error);
         listener.onErrorRequest(appRequestError);
     }
 
     @Override
     public void responseAsyncTask(HttpResponse response) {
-
+        if(response.getStatusLine().getStatusCode() != 200) {
+            AppRequestError appRequestError = ManageRequestAnswer.manageAsyncTaskError(response);
+            listener.onErrorRequest(appRequestError);
+        } else {
+            String resultServer = "";
+            try {
+                InputStream stream = response.getEntity().getContent();
+                resultServer = ManageRequestAnswer.manageResultFromServer(stream);
+            } catch (IOException e) {
+                Log.e(TAG, "Error getting answer from server");
+            } finally {
+                listener.onResultOK(resultServer);
+            }
+        }
     }
 }

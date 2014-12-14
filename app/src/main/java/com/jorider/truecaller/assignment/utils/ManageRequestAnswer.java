@@ -10,6 +10,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.jorider.truecaller.assignment.model.AppRequestError;
 
+import org.apache.http.HttpResponse;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -22,14 +24,15 @@ import java.util.Map;
  */
 public class ManageRequestAnswer {
 
+    public static final String TAG = ManageRequestAnswer.class.getName();
+
     /**
-     * Method to manage the error given
+     * Method to manage the Volley given error
      *
      * @param error
-     * @param tag
      * @return
      */
-    public static AppRequestError manageVolleyError(VolleyError error, String tag) {
+    public static AppRequestError manageVolleyError(VolleyError error) {
 
         AppRequestError appError = new AppRequestError();
         int httpResponse = 404;
@@ -61,7 +64,7 @@ public class ManageRequestAnswer {
                     }
                 }
             } catch (Throwable e) {
-                Log.e(tag, (e == null || e.getLocalizedMessage() == null) ? "Throwable" : e.getLocalizedMessage());
+                Log.e(TAG, (e == null || e.getLocalizedMessage() == null) ? "Throwable" : e.getLocalizedMessage());
                 message = "";
             }
         }
@@ -73,16 +76,16 @@ public class ManageRequestAnswer {
     }
 
     /**
+     * Manage result from request
      *
-     * @param data
+     * @param source        InputStream
      * @return
      */
-    public static String manageResultFromServer(byte[] data) {
+    public static String manageResultFromServer(InputStream source) {
 
         String respuesta = "";
         try {
 
-            InputStream source = new ByteArrayInputStream(data);
             Reader reader = new InputStreamReader(source);
 
             BufferedReader in = new BufferedReader(reader);
@@ -96,5 +99,18 @@ public class ManageRequestAnswer {
         } catch (Exception e) {
         }
         return respuesta;
+    }
+
+    /**
+     * Manage the error response from the AsyncTask request
+     *
+     * @param response
+     * @return
+     */
+    public static AppRequestError manageAsyncTaskError(HttpResponse response) {
+        AppRequestError appRequestError = new AppRequestError();
+        appRequestError.setHttpCode(response.getStatusLine().getStatusCode());
+        appRequestError.setMsg(response.getStatusLine().getReasonPhrase());
+        return appRequestError;
     }
 }

@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
                     firstProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
-            }).run(BaseRequest.VOLLEY);
+            }).run(BaseRequest.NATIVE);
         }
 
         /**
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
                     secondProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
-            }).run(BaseRequest.VOLLEY);
+            }).run(BaseRequest.NATIVE);
         }
 
         /**
@@ -133,7 +133,7 @@ public class MainActivity extends ActionBarActivity {
          */
         private void thirdRequest() {
             thirdProgressBar.setVisibility(View.VISIBLE);
-            Log.e(TAG, "BEGINS THIRD REQUEST->" + System.currentTimeMillis());
+            Log.e(TAG, "BEGINS THIRDVOLLEY REQUEST->" + System.currentTimeMillis());
             new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
@@ -145,7 +145,7 @@ public class MainActivity extends ActionBarActivity {
                     thirdProgressBar.setVisibility(View.INVISIBLE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
-            }).run(BaseRequest.VOLLEY);
+            }).run(BaseRequest.NATIVE);
         }
 
         /**
