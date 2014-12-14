@@ -2,7 +2,7 @@ package com.jorider.truecaller.assignment;
 
 import android.app.Application;
 
-import com.jorider.truecaller.assignment.volley.MyVolley;
+import com.jorider.truecaller.assignment.requests.volley.MyVolley;
 
 /**
  * Created by jorge on 13/12/14.

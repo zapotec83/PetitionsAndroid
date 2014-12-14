@@ -15,16 +15,12 @@ import android.widget.Toast;
 
 import com.jorider.truecaller.assignment.assignments.ManageAssignments;
 import com.jorider.truecaller.assignment.exceptions.MyException;
-import com.jorider.truecaller.assignment.listeners.ListenerFirstRequest;
-import com.jorider.truecaller.assignment.listeners.ListenerSecondRequest;
-import com.jorider.truecaller.assignment.listeners.ListenerThirdRequest;
+import com.jorider.truecaller.assignment.listeners.ListenerRequests;
 import com.jorider.truecaller.assignment.model.AppRequestError;
 import com.jorider.truecaller.assignment.model.Truecaller10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerEvery10thCharacterRequest;
 import com.jorider.truecaller.assignment.requests.BaseRequest;
-import com.jorider.truecaller.assignment.requests.FirstRequest;
-import com.jorider.truecaller.assignment.requests.SecondRequest;
-import com.jorider.truecaller.assignment.requests.ThirdRequest;
+import com.jorider.truecaller.assignment.requests.Requests;
 
 /**
  * @author jorge
@@ -94,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         private void firstRequest() {
             firstProgressBar.setVisibility(View.VISIBLE);
             Log.e(TAG, "BEGINS FIRST REQUEST->" + System.currentTimeMillis());
-            new FirstRequest(new ListenerFirstRequest() {
+            new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
                     firstProgressBar.setVisibility(View.INVISIBLE);
@@ -116,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
         private void secondRequest() {
             secondProgressBar.setVisibility(View.VISIBLE);
             Log.e(TAG, "BEGINS SECOND REQUEST->" + System.currentTimeMillis());
-            new SecondRequest(new ListenerSecondRequest() {
+            new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
                     secondProgressBar.setVisibility(View.INVISIBLE);
@@ -138,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
         private void thirdRequest() {
             thirdProgressBar.setVisibility(View.VISIBLE);
             Log.e(TAG, "BEGINS THIRD REQUEST->" + System.currentTimeMillis());
-            new ThirdRequest(new ListenerThirdRequest() {
+            new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
                     thirdProgressBar.setVisibility(View.INVISIBLE);
