@@ -5,7 +5,16 @@ package com.jorider.truecaller.assignment.model;
  */
 public class Truecaller10thCharacterRequest {
 
+    private TruecallerRequestError error = null;
     public char response;
+
+    public TruecallerRequestError getError() {
+        return error;
+    }
+
+    public void setError(TruecallerRequestError error) {
+        this.error = error;
+    }
 
     public char getResponse() {
         return response;

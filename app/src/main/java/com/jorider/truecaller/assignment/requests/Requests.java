@@ -2,68 +2,45 @@ package com.jorider.truecaller.assignment.requests;
 
 import android.os.AsyncTask;
 
-import com.android.volley.VolleyError;
 import com.jorider.truecaller.assignment.constants.Constants;
-import com.jorider.truecaller.assignment.listeners.ListenerAsyncTask;
-import com.jorider.truecaller.assignment.listeners.ListenerRequests;
-import com.jorider.truecaller.assignment.listeners.ListenerVolley;
-import com.jorider.truecaller.assignment.model.AppRequestError;
-import com.jorider.truecaller.assignment.model.MyHttpResponse;
-import com.jorider.truecaller.assignment.requests.asynctask.AsyncTaskRequest;
-import com.jorider.truecaller.assignment.requests.volley.VolleyRequests;
-import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
+import com.jorider.truecaller.assignment.listeners.CallbackFirstRequest;
+import com.jorider.truecaller.assignment.listeners.CallbackSecondRequest;
+import com.jorider.truecaller.assignment.listeners.CallbackThirdRequest;
+import com.jorider.truecaller.assignment.requests.asynctask.AsyncTaskFirstRequest;
+import com.jorider.truecaller.assignment.requests.asynctask.AsyncTaskSecondRequest;
+import com.jorider.truecaller.assignment.requests.asynctask.AsyncTaskThirdRequest;
 
 /**
  * Created by jorge
  */
-public class Requests extends BaseRequest implements ListenerVolley, ListenerAsyncTask {
+public class Requests {
 
     public static final String TAG = Requests.class.getName();
 
-    public ListenerRequests listener = null;
-    public final int TIMEOUT = Constants.DEFAULT_TIMEOUT;
+    /**
+     * Method to run the first request
+     *
+     * @param list      CallbackFirstRequest
+     */
+    public void runFirst(CallbackFirstRequest list) {
+        new AsyncTaskFirstRequest(list).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
     /**
-     * Constructor
+     * Method to run the second request
      *
-     * @param list
+     * @param list      CallbackSecondRequest
      */
-    public Requests(ListenerRequests list){
-        this.listener = list;
+    public void runSecond(CallbackSecondRequest list) {
+        new AsyncTaskSecondRequest(list).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    @Override
-    public void run(int library) {
-        switch (library) {
-            case NATIVE:
-                new AsyncTaskRequest(TIMEOUT, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                break;
-            case VOLLEY:
-                new VolleyRequests().createVolleyRequest(TIMEOUT, this);
-                break;
-            default:
-                new AsyncTaskRequest(TIMEOUT, this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                break;
-        }
-    }
-
-    @Override
-    public void onResponseOK(String response) {
-        listener.onResultOK(response);
-    }
-
-    @Override
-    public void onResponseKO(VolleyError error) {
-        AppRequestError appRequestError = ManageRequestAnswer.manageVolleyError(error);
-        listener.onErrorRequest(appRequestError);
-    }
-
-    @Override
-    public void responseAsyncTask(MyHttpResponse response) {
-        if(response.getContent() == null) {
-            listener.onErrorRequest(response.getError());
-        } else {
-            listener.onResultOK(response.getContent());
-        }
+    /**
+     * Method to run the third request
+     *
+     * @param list      CallbackThirdRequest
+     */
+    public void runThird(CallbackThirdRequest list) {
+        new AsyncTaskThirdRequest(list).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

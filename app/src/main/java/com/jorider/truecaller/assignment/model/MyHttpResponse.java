@@ -1,20 +1,12 @@
 package com.jorider.truecaller.assignment.model;
 
 /**
- * Created by jorge on 14/12/14.
+ * Created by jorge
  */
 public class MyHttpResponse {
 
-    private AppRequestError error = null;
-    private String content = "";
-
-    public AppRequestError getError() {
-        return error;
-    }
-
-    public void setError(AppRequestError error) {
-        this.error = error;
-    }
+    private String content = null;
+    private TruecallerRequestError requestError = null;
 
     public String getContent() {
         return content;
@@ -22,5 +14,13 @@ public class MyHttpResponse {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public TruecallerRequestError getRequestError() {
+        return requestError;
+    }
+
+    public void setRequestError(TruecallerRequestError requestError) {
+        this.requestError = requestError;
     }
 }

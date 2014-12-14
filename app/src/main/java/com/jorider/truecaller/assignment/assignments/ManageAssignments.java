@@ -1,7 +1,6 @@
 package com.jorider.truecaller.assignment.assignments;
 
 import com.jorider.truecaller.assignment.constants.Constants;
-import com.jorider.truecaller.assignment.exceptions.MyException;
 import com.jorider.truecaller.assignment.model.Truecaller10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerEvery10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerWordCounterRequest;
@@ -22,19 +21,18 @@ public class ManageAssignments {
      *
      * @param content
      * @return
-     * @throws MyException
      */
-    public static Truecaller10thCharacterRequest manageFirstResponse(String content) throws MyException {
+    public static Truecaller10thCharacterRequest manageFirstResponse(String content) {
 
-        char characterToReturn = 'a';
+        Truecaller10thCharacterRequest truecaller10thChar = new Truecaller10thCharacterRequest();
+        char characterToReturn = '*';
 
         if (content != null && content.length() > Constants.CHARACTER_POSITION) {
             characterToReturn = content.charAt(Constants.CHARACTER_POSITION);
         } else {
-            throw new MyException("No enough data from content!");
+            truecaller10thChar.setResponse(characterToReturn);
         }
 
-        Truecaller10thCharacterRequest truecaller10thChar = new Truecaller10thCharacterRequest();
         truecaller10thChar.setResponse(characterToReturn);
         return truecaller10thChar;
     }
@@ -42,9 +40,8 @@ public class ManageAssignments {
     /**
      * @param content
      * @return
-     * @throws MyException
      */
-    public static TruecallerEvery10thCharacterRequest manageSecondResponse(String content) throws MyException {
+    public static TruecallerEvery10thCharacterRequest manageSecondResponse(String content) {
 
         TruecallerEvery10thCharacterRequest response = new TruecallerEvery10thCharacterRequest();
         StringBuffer buffer = new StringBuffer();
@@ -56,7 +53,7 @@ public class ManageAssignments {
             response.setResponse(buffer.toString());
 
         } else {
-            throw new MyException("No enough data from content!");
+            response.setResponse("");
         }
         return response;
     }
@@ -66,9 +63,8 @@ public class ManageAssignments {
      *
      * @param content
      * @return
-     * @throws MyException
      */
-    public static TruecallerWordCounterRequest manageThirdResponse(String content) throws MyException {
+    public static TruecallerWordCounterRequest manageThirdResponse(String content) {
         TruecallerWordCounterRequest truecallerRequest = new TruecallerWordCounterRequest();
 
         Map<String, Integer> wordList = new HashMap<String, Integer>();
@@ -77,11 +73,11 @@ public class ManageAssignments {
 
             String[] listOfWords = content.split(" ");
 
-            if(listOfWords != null && listOfWords.length > 0) {
-                for(int i = 0; i<listOfWords.length; i++) {
+            if (listOfWords != null && listOfWords.length > 0) {
+                for (int i = 0; i < listOfWords.length; i++) {
                     String word = listOfWords[i].trim();
-                    if(word != null && !word.contentEquals("")) {
-                        if(wordList.containsKey(word)) {
+                    if (word != null && !word.contentEquals("")) {
+                        if (wordList.containsKey(word)) {
                             int repeated = wordList.get(word);
                             wordList.put(word, repeated + 1);
                         } else {
@@ -92,7 +88,7 @@ public class ManageAssignments {
             }
 
         } else {
-            throw new MyException("Content == null");
+            truecallerRequest.setHashMap(wordList);
         }
 
         truecallerRequest.setHashMap(wordList);
