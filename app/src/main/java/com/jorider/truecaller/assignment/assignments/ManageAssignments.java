@@ -5,14 +5,17 @@ import com.jorider.truecaller.assignment.exceptions.MyException;
 import com.jorider.truecaller.assignment.model.Truecaller10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerEvery10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerWordCounterRequest;
+import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jorge on 13/12/14.
+ * Created by jorge
  */
 public class ManageAssignments {
+
+    public static final String TAG = ManageRequestAnswer.class.getName();
 
     /**
      * Method to give the response to the
@@ -71,15 +74,19 @@ public class ManageAssignments {
         Map<String, Integer> wordList = new HashMap<String, Integer>();
 
         if (content != null) {
+
             String[] listOfWords = content.split(" ");
+
             if(listOfWords != null && listOfWords.length > 0) {
                 for(int i = 0; i<listOfWords.length; i++) {
                     String word = listOfWords[i].trim();
-                    if(wordList.containsKey(word)) {
-                        int repeated = wordList.get(word);
-                        wordList.put(word, repeated + 1);
-                    } else {
-                        wordList.put(word, 1);
+                    if(word != null && !word.contentEquals("")) {
+                        if(wordList.containsKey(word)) {
+                            int repeated = wordList.get(word);
+                            wordList.put(word, repeated + 1);
+                        } else {
+                            wordList.put(word, 1);
+                        }
                     }
                 }
             }
@@ -89,7 +96,6 @@ public class ManageAssignments {
         }
 
         truecallerRequest.setHashMap(wordList);
-
         return truecallerRequest;
     }
 }

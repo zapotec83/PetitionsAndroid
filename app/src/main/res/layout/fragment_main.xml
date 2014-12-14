@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/first_text"
                     android:text="FIRST REQUEST RESULT"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
@@ -45,14 +46,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/first_progressBar"
-                    android:visibility="invisible"
+                    android:visibility="gone"
+                    android:layout_below="@+id/first_text"
+                    android:layout_centerHorizontal="true"
                     android:indeterminate="false" />
 
                 <TextView
                     android:id="@+id/first_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/first_progressBar" />
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/first_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -60,6 +65,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/second_text"
                     android:text="SECOND REQUEST RESULT"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
@@ -71,14 +77,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/second_progressBar"
-                    android:visibility="invisible"
+                    android:visibility="gone"
+                    android:layout_below="@+id/second_text"
+                    android:layout_centerHorizontal="true"
                     android:indeterminate="false" />
 
                 <TextView
                     android:id="@+id/second_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/second_progressBar" />
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/second_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -86,6 +96,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/third_text"
                     android:text="THIRD REQUEST RESULT"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
@@ -97,14 +108,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/third_progressBar"
-                    android:visibility="invisible"
+                    android:visibility="gone"
+                    android:layout_below="@+id/third_text"
+                    android:layout_centerHorizontal="true"
                     android:indeterminate="false" />
 
                 <TextView
+                    android:id="@+id/third_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/third_progressBar"
-                    android:id="@+id/third_request" />
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/third_text" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

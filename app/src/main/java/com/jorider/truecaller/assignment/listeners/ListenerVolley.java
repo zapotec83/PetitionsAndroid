@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
  */
 public interface ListenerVolley {
 
-    public void onResponseOK (NetworkResponse response);
+    public void onResponseOK (String response);
 
     public void onResponseKO (VolleyError error);
 }

@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.jorider.truecaller.assignment.constants.Constants;
 import com.jorider.truecaller.assignment.listeners.ListenerAsyncTask;
+import com.jorider.truecaller.assignment.model.MyHttpResponse;
+import com.jorider.truecaller.assignment.utils.ManageRequestAnswer;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -24,11 +26,12 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by jorge
  */
-public class AsyncTaskRequest extends AsyncTask<Void, Void, HttpResponse> {
+public class AsyncTaskRequest extends AsyncTask<Void, Void, MyHttpResponse> {
 
     public static final String TAG = AsyncTaskRequest.class.getName();
 
@@ -41,9 +44,9 @@ public class AsyncTaskRequest extends AsyncTask<Void, Void, HttpResponse> {
     }
 
     @Override
-    protected HttpResponse doInBackground(Void... params) {
+    protected MyHttpResponse doInBackground(Void... params) {
         NativeRequest nativeRequest = new NativeRequest();
-        HttpResponse response = null;
+        MyHttpResponse response = null;
         try {
             response = nativeRequest.createRequest();
         } catch (IOException e) {
@@ -53,7 +56,7 @@ public class AsyncTaskRequest extends AsyncTask<Void, Void, HttpResponse> {
     }
 
     @Override
-    protected void onPostExecute(HttpResponse response) {
+    protected void onPostExecute(MyHttpResponse response) {
         listener.responseAsyncTask(response);
         super.onPostExecute(response);
     }
@@ -69,11 +72,33 @@ public class AsyncTaskRequest extends AsyncTask<Void, Void, HttpResponse> {
          * @return
          * @throws IOException
          */
-        public HttpResponse createRequest() throws IOException {
+        public MyHttpResponse createRequest() throws IOException {
+
             HttpClient client = generateHttpClient();
             HttpGet request = new HttpGet(Constants.URL);
+
+            /**
+             * GENERATE REQUEST
+             */
             HttpResponse response = client.execute(request);
-            return response;
+
+            MyHttpResponse myResponse = new MyHttpResponse();
+
+            if(response.getStatusLine().getStatusCode() == 200) {
+                String resultServer = "";
+                try {
+                    InputStream stream = response.getEntity().getContent();
+                    resultServer = ManageRequestAnswer.manageResultFromServer(stream);
+                } catch (IOException e) {
+                    Log.e(TAG, "Error getting answer from server");
+                } finally {
+                    myResponse.setContent(resultServer);
+                }
+            } else {
+                myResponse.setError(ManageRequestAnswer.manageAsyncTaskError(response));
+            }
+
+            return myResponse;
         }
     }
 

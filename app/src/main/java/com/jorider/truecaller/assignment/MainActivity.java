@@ -19,6 +19,7 @@ import com.jorider.truecaller.assignment.listeners.ListenerRequests;
 import com.jorider.truecaller.assignment.model.AppRequestError;
 import com.jorider.truecaller.assignment.model.Truecaller10thCharacterRequest;
 import com.jorider.truecaller.assignment.model.TruecallerEvery10thCharacterRequest;
+import com.jorider.truecaller.assignment.model.TruecallerWordCounterRequest;
 import com.jorider.truecaller.assignment.requests.BaseRequest;
 import com.jorider.truecaller.assignment.requests.Requests;
 
@@ -89,18 +90,21 @@ public class MainActivity extends ActionBarActivity {
          */
         private void firstRequest() {
             firstProgressBar.setVisibility(View.VISIBLE);
+            firstText.setVisibility(View.GONE);
             Log.e(TAG, "BEGINS FIRST REQUEST->" + System.currentTimeMillis());
             new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
-                    firstProgressBar.setVisibility(View.INVISIBLE);
+                    firstText.setVisibility(View.VISIBLE);
+                    firstProgressBar.setVisibility(View.GONE);
                     Log.e(TAG, "FINISHES FIRST REQUEST->" + System.currentTimeMillis());
                     manageFirstResponse(result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
-                    firstProgressBar.setVisibility(View.INVISIBLE);
+                    firstText.setVisibility(View.VISIBLE);
+                    firstProgressBar.setVisibility(View.GONE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.NATIVE);
@@ -111,18 +115,21 @@ public class MainActivity extends ActionBarActivity {
          */
         private void secondRequest() {
             secondProgressBar.setVisibility(View.VISIBLE);
+            secondText.setVisibility(View.GONE);
             Log.e(TAG, "BEGINS SECOND REQUEST->" + System.currentTimeMillis());
             new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
-                    secondProgressBar.setVisibility(View.INVISIBLE);
+                    secondText.setVisibility(View.VISIBLE);
+                    secondProgressBar.setVisibility(View.GONE);
                     Log.e(TAG, "FINISHES SECOND REQUEST->" + System.currentTimeMillis());
                     manageSecondResponse(result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
-                    secondProgressBar.setVisibility(View.INVISIBLE);
+                    secondText.setVisibility(View.VISIBLE);
+                    secondProgressBar.setVisibility(View.GONE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.NATIVE);
@@ -133,16 +140,21 @@ public class MainActivity extends ActionBarActivity {
          */
         private void thirdRequest() {
             thirdProgressBar.setVisibility(View.VISIBLE);
+            thirdText.setVisibility(View.GONE);
             Log.e(TAG, "BEGINS THIRDVOLLEY REQUEST->" + System.currentTimeMillis());
             new Requests(new ListenerRequests() {
                 @Override
                 public void onResultOK(String result) {
-                    thirdProgressBar.setVisibility(View.INVISIBLE);
+                    thirdText.setVisibility(View.VISIBLE);
+                    thirdProgressBar.setVisibility(View.GONE);
+                    Log.e(TAG, "FINISHES THIRD REQUEST->" + System.currentTimeMillis());
+                    manageThirdResponse(result);
                 }
 
                 @Override
                 public void onErrorRequest(AppRequestError error) {
-                    thirdProgressBar.setVisibility(View.INVISIBLE);
+                    thirdText.setVisibility(View.VISIBLE);
+                    thirdProgressBar.setVisibility(View.GONE);
                     Log.e(TAG, "" + error.getHttpCode() + "->" + error.getMsg());
                 }
             }).run(BaseRequest.NATIVE);
@@ -172,12 +184,17 @@ public class MainActivity extends ActionBarActivity {
                 TruecallerEvery10thCharacterRequest truecallerChar = ManageAssignments.manageSecondResponse(response);
                 secondText.setText("" + truecallerChar.getResponse());
             } catch (MyException e) {
-                Toast.makeText(context, "Error managing first response " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error managing second response " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
         public void manageThirdResponse(String response) {
-
+            try {
+                TruecallerWordCounterRequest counterRequest = ManageAssignments.manageThirdResponse(response);
+                thirdText.setText(TruecallerWordCounterRequest.WORD_REPEATED + " is repeated -> " + counterRequest.getKeyWordRepeated() + " times");
+            } catch (MyException e) {
+                Toast.makeText(context, "Error managing third response " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

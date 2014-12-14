@@ -84,19 +84,21 @@ public class ManageRequestAnswer {
     public static String manageResultFromServer(InputStream source) {
 
         String respuesta = "";
+        StringBuilder rslt = new StringBuilder();
+
         try {
 
             Reader reader = new InputStreamReader(source);
 
             BufferedReader in = new BufferedReader(reader);
             String line = null;
-            StringBuilder rslt = new StringBuilder();
             while ((line = in.readLine()) != null) {
                 rslt.append(line);
             }
             respuesta = rslt.toString();
 
         } catch (Exception e) {
+            Log.e(TAG, "Error managing answer");
         }
         return respuesta;
     }
